@@ -64,20 +64,4 @@ class ParentNode(HTMLNode):
 
         return f'<{self.tag}{props_str}>{children_html}</{self.tag}>'
 
-def text_node_to_html_node(text_node):
-    match text_node.TextType:
-        case TextType.TEXT:
-            return LeafNode("text_node")
-        case TextType.BOLD:
-            return LeafNode("b","text_node")
-        case TextType.ITALIC:
-            return LeafNode("i", "text_node")
-        case TextType.CODE:
-            return LeafNode("code", "text_node")
-        case TextType.LINK:
-            return LeafNode("a", "text_node")
-        case TextType.IMAGE:
-            return LeafNode("img", "text_node")
-        case _:
-            raise Exception("Invalid text type for transforming to HTML")
         
