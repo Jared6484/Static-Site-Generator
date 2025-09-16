@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python3 -m unittest discover -s src -v
+PYTHONUNBUFFERED=1 python3 -m unittest discover -s src -v --buffer

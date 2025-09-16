@@ -1,5 +1,13 @@
 from enum import Enum
 
+class BlockType(Enum):
+    PARAGRAPH = "paragraph"
+    HEADING = "heading"
+    CODE = "code"
+    QUOTE = "quote"
+    UNORDERED_LIST = "unordered_list"
+    ORDERED_LIST = "ordered_list"
+
 class TextType(Enum):
     TEXT = "text"
     BOLD = "bold"
@@ -22,5 +30,6 @@ class TextNode:
         )
 
     def __repr__(self):
-        return f"TextNode({self.text}, {self.text_type}, {self.url})"
+        return f"TextNode(\"{self.text}\", {self.text_type}, {self.url})"
+
 
