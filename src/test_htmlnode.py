@@ -5,6 +5,7 @@ from htmlnode import HTMLNode, LeafNode, ParentNode
 from converters import (text_node_to_html_node, split_nodes_delimeter, 
                         split_nodes_link,split_nodes_images, text_to_textnodes,
                         markdown_to_blocks, block_to_block_type, markdown_to_html_node)
+from functions import *
 
 class TestHTMLNode(unittest.TestCase):
 
@@ -295,6 +296,24 @@ This is the same paragraph on a new line
         self.assertEqual(
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff</code></pre></div>",html
         )
+
+    def test_basic_title(self):
+        self.assertEqual(extract_title("# Hello"), "Hello")
+
+    def test_title_with_whitespace(self):
+        self.assertEqual(extract_title("   #   Hello World   "), "Hello World")
+
+    def test_multiline_with_title(self):
+        md = """
+        This is some intro text
+        # Title Here
+        More text below
+        """
+        self.assertEqual(extract_title(md), "Title Here")
+
+    def test_no_title_raises(self):
+        with self.assertRaises(Exception):
+            extract_title("## Subtitle only\nMore text")
 
 if __name__ == "__main__":
     unittest.main()

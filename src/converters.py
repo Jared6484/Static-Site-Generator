@@ -188,7 +188,8 @@ def markdown_to_html_node(markdown):  # Meat of the generator
 
         if block_type == BlockType.HEADING:
             lvl_of_heading = block.count("#", 0, block.find(" "))
-            raw_string = block[idx_cut+1:].strip()
+            #idx_cut = block.find(" :")
+            raw_string = block.lstrip("#").strip()
             children = text_to_children(raw_string)
             node = ParentNode(f"h{lvl_of_heading}", children=children)
 

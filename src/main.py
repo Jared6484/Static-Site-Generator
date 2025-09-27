@@ -1,35 +1,36 @@
 from textnode import *
 import shutil
 import os
+from functions import *
 
 
 print("hello world")
+dir_path_static = "./static"
+dir_path_public = "./public"
+dir_path_content = "./content"
+template_path = "./template.html"
 
 def main():
-    node = TextNode("This is some anchor text", TextType.LINK.value, "https://www.boot.dev")
-    print(node)
-    copy_pub_src("static/", "public/")
 
-def copy_pub_src(src, dest):
-    if os.path.exists(dest):
-        shutil.rmtree(dest)
-        print("REMOVED Directory")
-    os.makedirs(dest)
-    print(f"Created directory: {dest}")
+    copy_pub_src(dir_path_static, dir_path_public)
 
+    #generate_page("content/index.md", "template.html","public/index.html")
+    '''try:
+        generate_page(
+                    os.path.join(dir_path_content, "index.md"),
+                    template_path,
+                    os.path.join(dir_path_public, "index.html"),
+                      )
+        print("✅ Homepage generated.")
+    except Exception as e:
+        print(f"❌ Failed to generate homepage: {e}")'''
 
-    for item in os.listdir(src):
-        src_item = os.path.join(src, item)
-        print(f"Source Item: {src_item}")
-        dst_item = os.path.join(dest, item)
-        print(f"Destination Item: {dst_item}")
-
-        if os.path.isdir(src_item):
-            copy_pub_src(src_item, dst_item)
-        else:
-            shutil.copy2(src_item,dst_item)
-            print(f"Copied: {src_item} and  {dst_item}")
-
+    try:
+        # Generate all pages recursively, not just the homepage
+        generate_all_pages(dir_path_content, template_path, dir_path_public)
+        print("✅ All pages generated.")
+    except Exception as e:
+        print(f"❌ Failed to generate pages: {e}")
 
 if __name__ == "__main__":
     main()
