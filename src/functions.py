@@ -2,7 +2,7 @@ from converters import *
 import os
 import shutil
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath="/"):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     with open(from_path, 'r') as f:
@@ -14,7 +14,12 @@ def generate_page(from_path, template_path, dest_path):
     html_content = markdown_to_html_node(markdown_content).to_html()
     title = extract_title(markdown_content)
 
-    final_output = template_content.replace("{{ Title }}", title).replace("{{ Content }}", html_content)
+    final_output = (template_content
+                    .replace("{{ Title }}", title)
+                    .replace("{{ Content }}", html_content)
+                    .replace('href="/', f'href={basepath}')
+                    .replace('src="/',f'src="{basepath}')
+                    )
 
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
@@ -48,7 +53,7 @@ def copy_pub_src(src, dest):
             shutil.copy2(src_item,dst_item)
             print(f"Copied: {src_item} and  {dst_item}")
 
-def generate_all_pages(content_dir, template_path, public_dir):
+def generate_all_pages(content_dir, template_path, public_dir, basepath="/"):
     for root, dirs, files in os.walk(content_dir):
         for file in files:
             if file.endswith(".md"):
@@ -57,4 +62,4 @@ def generate_all_pages(content_dir, template_path, public_dir):
                 dest_rel_path = rel_path[:-3] + ".html"  # change .md to .html
                 dest_path = os.path.join(public_dir, dest_rel_path)
                 print(f"Generating page: {from_path} -> {dest_path}")
-                generate_page(from_path, template_path, dest_path)
+                generate_page(from_path, template_path, dest_path, basepath)
